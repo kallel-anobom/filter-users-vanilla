@@ -14,8 +14,6 @@ const customFetch = async (endpoint) => {
 };
 
 const createListItem = (item) => {
-  let insertDocumentDom = document.querySelector("#content");
-
   const newDocument = `
   <div>
     <img src="${item.photo}" alt="${item.name}">
@@ -24,7 +22,7 @@ const createListItem = (item) => {
   </div>
   `;
 
-  insertDocumentDom.append(newDocument);
+  return newDocument;
 };
 
 const getUsers = async () => {
@@ -40,10 +38,9 @@ const getUsers = async () => {
 
   const listItems = dataUsers.map((name) => createListItem(name));
 
-  return document.body.insertAdjacentHTML(
-    "afterbegin",
-    `<ul>${listItems}</ul>`
-  );
+  let targetInsertDocumentDom = document.querySelector("#content");
+
+  return targetInsertDocumentDom.insertAdjacentHTML("beforeend", listItems);
 };
 
 const getFilterUsers = (key, value) => {
@@ -60,4 +57,4 @@ const getFilterUsers = (key, value) => {
   }
 };
 
-getUsers()
+getUsers();
