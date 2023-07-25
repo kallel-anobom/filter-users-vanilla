@@ -1,0 +1,12 @@
+{
+  "name": "filter-vanilla-js",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9"
+  }
+}
