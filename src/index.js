@@ -15,12 +15,11 @@ const customFetch = async (endpoint) => {
 
 const createListItem = (item) => {
   const newDocument = `
-  <div>
+  <div style="visibility: visible">
     <img src="${item.photo}" alt="${item.name}">
     <h3>${item.name}</h3>
     <p>${item.city}</p>, <span>${item.state}</span>
-  </div>
-  `;
+  </div>`;
 
   return newDocument;
 };
@@ -36,23 +35,37 @@ const getUsers = async () => {
     };
   });
 
-  const listItems = dataUsers.map((name) => createListItem(name));
+  const listItems = dataUsers.map((data) => createListItem(data));
+  
+  let targetInsertDocumentElement = document.querySelector("#content");
 
-  let targetInsertDocumentDom = document.querySelector("#content");
-
-  return targetInsertDocumentDom.insertAdjacentHTML("beforeend", listItems);
+  return targetInsertDocumentElement.insertAdjacentHTML("beforeend", listItems);
 };
 
-const getFilterUsers = (key, value) => {
-  let search_query = document.getElementById("searchbox").value;
+const getFilterUsers = (value) => {
+  let targetInsertDocumentElement = document.getElementById("content");
+  let childrenElements = targetInsertDocumentElement.children;
 
-  for (var i = 0; i < cards.length; i++) {
+  for (let i = 0; i < childrenElements.length; i++) {
+    let nameSearch =
+      childrenElements[i].children[2].innerHTML.toLocaleLowerCase();
+    let locationSearch =
+      childrenElements[i].children[3].innerHTML.toLocaleLowerCase();
+    let stringTreatment = locationSearch.trim(" ").split(" ").join(" ");
+
     if (
-      cards[i].textContent.toLowerCase().includes(search_query.toLowerCase())
+      nameSearch.substring(0, 3) === value ||
+      stringTreatment.substring(0, 3) === value
     ) {
-      cards[i].classList.remove("is-hidden");
-    } else {
-      cards[i].classList.add("is-hidden");
+      childrenElements[i].style.display = "block";
+      childrenElements[i].style.visibility = "visible";
+    } else if (childrenElements[i].style.display !== "block") {
+      childrenElements[i].style.visibility = "hidden";
+    }
+
+    if (value.length === 0) {
+      childrenElements[i].style.removeProperty("visibility");
+      childrenElements[i].style.removeProperty("display");
     }
   }
 };
